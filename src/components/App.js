@@ -8,6 +8,7 @@ import Table from 'react-bootstrap/Table';
 // ----
 // Child Components
 import LogItem from './LogItem';
+import AddLogItem from './AddLogItem';
 
 
 // ----
@@ -39,6 +40,8 @@ const App = () => {
 
 	return (
 		<Container className='app'>
+			<AddLogItem />
+
 			<Table>
 				<thead>
 					<tr>
