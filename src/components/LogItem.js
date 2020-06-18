@@ -1,6 +1,7 @@
 // ----
 // Dependencies
 import React from 'react';
+import Moment from 'react-moment';
 import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 
@@ -41,7 +42,9 @@ const LogItem = ({ log: { priority, text, user, created }}) => {
             </td>
 
             <td>
-                { created }
+                <Moment format="MMMM Do YYYY, h:mm:ss a">
+                    { created }
+                </Moment>
             </td>
 
             <td>
