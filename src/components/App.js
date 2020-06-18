@@ -56,8 +56,10 @@ const App = () => {
 
 			return false;
 		} else {
-			item._id = ( logs.length + 1 );
+			item._id = logs.length + 1;
 			item.created = new Date().toString();
+
+			console.log( item );
 	
 			setLogs([ ...logs, item ]);
 	
@@ -65,6 +67,14 @@ const App = () => {
 
 			return true;
 		}
+	}
+
+
+	// Delete Log Item
+	function deleteItem( _id ) {
+		setLogs( logs.filter(( item ) => item._id !== _id ));
+
+		showAlert( 'Log Removed' );
 	}
 
 
@@ -127,6 +137,7 @@ const App = () => {
 							<LogItem 
 								key={ log._id } 
 								log={ log } 
+								deleteItem={ deleteItem }
 							/> 
 						);
 					})}

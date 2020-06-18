@@ -8,7 +8,10 @@ import Badge from 'react-bootstrap/Badge';
 
 // ----
 // LogItem functional component
-const LogItem = ({ log: { priority, text, user, created }}) => {
+const LogItem = ({ 
+    log: { priority, text, user, created, _id }, 
+    deleteItem 
+}) => {
 
     // Set variant for priority badge
     const setVariant = () => {
@@ -51,7 +54,7 @@ const LogItem = ({ log: { priority, text, user, created }}) => {
                 <Button 
                     variant='danger' 
                     size='sm' 
-                    onClick={() => alert( 'Delete Log (coming soon)' )}
+                    onClick={() => deleteItem( _id )}
                 >
                     Delete
                 </Button>
