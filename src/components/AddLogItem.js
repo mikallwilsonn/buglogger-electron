@@ -22,10 +22,12 @@ const AddLogItem = ({ addItem }) => {
     const handleSubmit = ( event ) => {
         event.preventDefault();
 
-        addItem({ text, user, priority });
+        const submitNewItem = addItem({ text, user, priority });
 
-        setText( '' );
-        setUser( '' );
+        if ( submitNewItem === true ) {
+            setText( '' );
+            setUser( '' );
+        }
     }
 
 

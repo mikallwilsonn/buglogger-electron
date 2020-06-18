@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
+import Alert from 'react-bootstrap/Alert';
 
 
 // ----
@@ -14,6 +15,7 @@ import AddLogItem from './AddLogItem';
 // ----
 // App functional component
 const App = () => {
+	// Logs State
 	const [ logs, setLogs ] = useState([
 		{
 			_id: 1,
@@ -39,18 +41,62 @@ const App = () => {
 	]);
 
 
+	// Alert State
+	const [ alert, setAlert ] = useState({
+		show: false,
+		message: '',
+		variant: 'success'
+	});
+
+
 	// Add New Log Item
 	function addItem( item ) {
-		item._id = ( logs.length + 1 );
-		item.created = new Date().toString();
+		if ( item.text === '' || item.user === '' || item.priority === '' ) {
+			showAlert( 'Please enter all fields', 'danger' );
 
-		setLogs([ ...logs, item ]);
+			return false;
+		} else {
+			item._id = ( logs.length + 1 );
+			item.created = new Date().toString();
+	
+			setLogs([ ...logs, item ]);
+	
+			showAlert( 'Log Added' );
+
+			return true;
+		}
 	}
+
+
+	// Show Alert
+	function showAlert( message, variant = 'success', seconds = 3000 ) {
+		setAlert({
+			show: true,
+			message,
+			variant
+		});
+
+		setTimeout(() => {
+			setAlert({
+				show: false,
+				message: '',
+				variant: 'success'
+			})
+		}, seconds );
+	}
+
 
 	// Render the component
 	return (
 		<Container className='app'>
 			<AddLogItem addItem={ addItem } />
+
+			{	alert.show &&
+
+				<Alert variant={ alert.variant }>
+					{ alert.message }
+				</Alert>
+			}
 
 			<Table>
 				<thead>
