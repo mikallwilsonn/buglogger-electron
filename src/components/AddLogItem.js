@@ -10,18 +10,30 @@ import Button from 'react-bootstrap/Button';
 
 // ----
 // AddLogItem functional component
-const AddLogItem = () => {
+const AddLogItem = ({ addItem }) => {
 
     // State hooks
     const [ text, setText ] = useState( '' );
     const [ user, setUser ] = useState( '' );
-    const [ priority, setPriority ] = useState( '' );
+    const [ priority, setPriority ] = useState( 'low' );
+
+
+    // Handle Form submission
+    const handleSubmit = ( event ) => {
+        event.preventDefault();
+
+        addItem({ text, user, priority });
+
+        setText( '' );
+        setUser( '' );
+    }
+
 
     // Render the component
     return (
         <Card className="mt-5 mb-3">
             <Card.Body>
-                <Form>
+                <Form onSubmit={ handleSubmit }>
                     <Row className="my-3">
                         <Col>
                             <Form.Control 
@@ -47,7 +59,7 @@ const AddLogItem = () => {
                                 value={ priority } 
                                 onChange={( event ) => setPriority( event.target.value )}
                             >
-                                <option value="0">
+                                <option value="0" disabled>
                                     Select Priorty
                                 </option>
 

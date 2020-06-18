@@ -38,9 +38,19 @@ const App = () => {
 		},
 	]);
 
+
+	// Add New Log Item
+	function addItem( item ) {
+		item._id = ( logs.length + 1 );
+		item.created = new Date().toString();
+
+		setLogs([ ...logs, item ]);
+	}
+
+	// Render the component
 	return (
 		<Container className='app'>
-			<AddLogItem />
+			<AddLogItem addItem={ addItem } />
 
 			<Table>
 				<thead>
