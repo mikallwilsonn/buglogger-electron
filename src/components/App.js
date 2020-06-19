@@ -45,13 +45,14 @@ const App = () => {
 
 			return false;
 		} else {
+			/*
 			item._id = logs.length + 1;
 			item.created = new Date().toString();
-
-			console.log( item );
-	
 			setLogs([ ...logs, item ]);
-	
+			*/
+
+			ipcRenderer.send( 'logs:add', item );
+
 			showAlert( 'Log Added' );
 
 			return true;

@@ -103,10 +103,26 @@ async function sendLogs() {
 
 		mainWindow.webContents.send( 'logs:get', JSON.stringify( logs ));
 	} catch ( error ) {
-		console.log( error );
+		console.log( `⚠️ ${ error }` );
 	}
 }
 
+
+// ----
+// Create new logs
+ipcMain.on( 'logs:add', async ( event, item ) => {
+	try {
+		await Log.create( item );
+
+		sendLogs();
+	} catch ( error ) {
+		console.log( `⚠️ ${ error }` );
+	}
+});
+
+
+// ----
+// Other IPC/Window events
 
 // When all windows are closed
 app.on( 'window-all-closed', () => {
