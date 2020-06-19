@@ -1,9 +1,10 @@
 // ----
 // Dependencies
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
 import Alert from 'react-bootstrap/Alert';
+import { ipcRenderer } from 'electron';
 
 
 // ----
@@ -16,29 +17,7 @@ import AddLogItem from './AddLogItem';
 // App functional component
 const App = () => {
 	// Logs State
-	const [ logs, setLogs ] = useState([
-		{
-			_id: 1,
-			text: 'This is log one',
-			priority: 'low',
-			user: 'Bob',
-			created: new Date().toString()
-		},
-		{
-			_id: 2,
-			text: 'A second log',
-			priority: 'moderate',
-			user: 'Jim',
-			created: new Date().toString()
-		},
-		{
-			_id: 3,
-			text: 'Here, this is a third log to show',
-			priority: 'high',
-			user: 'Jane',
-			created: new Date().toString()
-		},
-	]);
+	const [ logs, setLogs ] = useState([]);
 
 
 	// Alert State
@@ -49,6 +28,22 @@ const App = () => {
 	});
 
 
+	// ----
+	useEffect(() => {
+		ipcRenderer.send( 'logs:load' ); 
+
+		ipcRenderer.on( 'logs:get', ( event, logs ) => {
+			setLogs(JSON.parse( logs ));
+		});
+
+		ipcRenderer.on( 'logs:clear', () => {
+			setLogs([]);
+
+			showAlert( 'Logs Cleared' );
+		});
+	}, []);
+
+
 	// Add New Log Item
 	function addItem( item ) {
 		if ( item.text === '' || item.user === '' || item.priority === '' ) {
@@ -56,13 +51,14 @@ const App = () => {
 
 			return false;
 		} else {
+			/*
 			item._id = logs.length + 1;
 			item.created = new Date().toString();
-
-			console.log( item );
-	
 			setLogs([ ...logs, item ]);
-	
+			*/
+
+			ipcRenderer.send( 'logs:add', item );
+
 			showAlert( 'Log Added' );
 
 			return true;
@@ -72,7 +68,8 @@ const App = () => {
 
 	// Delete Log Item
 	function deleteItem( _id ) {
-		setLogs( logs.filter(( item ) => item._id !== _id ));
+		// setLogs( logs.filter(( item ) => item._id !== _id ));
+		ipcRenderer.send( 'logs:delete', _id );
 
 		showAlert( 'Log Removed' );
 	}
