@@ -3,6 +3,11 @@
 const path = require( 'path' );
 const url = require( 'url' );
 const { app, BrowserWindow } = require( 'electron' );
+const connectDB = require( './config/db' );
+
+
+// Connect to Database
+connectDB();
 
 
 // Initializing main window variable
