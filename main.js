@@ -122,6 +122,19 @@ ipcMain.on( 'logs:add', async ( event, item ) => {
 
 
 // ----
+// Delete Log
+ipcMain.on( 'logs:delete', async ( event, _id ) => {
+	try {
+		await Log.findOneAndDelete({ _id });
+
+		sendLogs();
+	} catch ( error ) {
+		console.log( `⚠️ ${ error }` );
+	}
+});
+
+
+// ----
 // Other IPC/Window events
 
 // When all windows are closed
