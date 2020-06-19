@@ -1,9 +1,10 @@
 // ----
 // Dependencies
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
 import Alert from 'react-bootstrap/Alert';
+import { ipcRenderer } from 'electron';
 
 
 // ----
@@ -16,29 +17,7 @@ import AddLogItem from './AddLogItem';
 // App functional component
 const App = () => {
 	// Logs State
-	const [ logs, setLogs ] = useState([
-		{
-			_id: 1,
-			text: 'This is log one',
-			priority: 'low',
-			user: 'Bob',
-			created: new Date().toString()
-		},
-		{
-			_id: 2,
-			text: 'A second log',
-			priority: 'moderate',
-			user: 'Jim',
-			created: new Date().toString()
-		},
-		{
-			_id: 3,
-			text: 'Here, this is a third log to show',
-			priority: 'high',
-			user: 'Jane',
-			created: new Date().toString()
-		},
-	]);
+	const [ logs, setLogs ] = useState([]);
 
 
 	// Alert State
@@ -47,6 +26,16 @@ const App = () => {
 		message: '',
 		variant: 'success'
 	});
+
+
+	// ----
+	useEffect(() => {
+		ipcRenderer.send( 'logs:load' ); 
+
+		ipcRenderer.on( 'logs:get', ( event, logs ) => {
+			setLogs(JSON.parse( logs ));
+		});
+	}, []);
 
 
 	// Add New Log Item
